@@ -3,17 +3,43 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {createTheme} from "@mui/material/styles";
+import {ThemeProvider} from "@mui/material";
+import {GlobalContextProvider} from "./context/GlobalContext";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    document.getElementById('root') as HTMLElement
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+        primary: {
+            main: '#C18E37',
+        },
+    },
+});
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+        .then(function (reg) {
+            console.log('Registro de SW exitoso', reg);
+        })
+        .catch(function (err) {
+            console.warn('Error al tratar de registrar el sw', err);
+        })
+
+}
+
+
+
+root.render(
+    <ThemeProvider theme={darkTheme}>
+        <GlobalContextProvider>
+            <App/>
+        </GlobalContextProvider>
+    </ThemeProvider>
+);
+
 reportWebVitals();
